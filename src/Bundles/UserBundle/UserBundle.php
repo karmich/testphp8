@@ -5,19 +5,24 @@ namespace App\Bundles\UserBundle;
 
 
 use Core\EventDispatcher;
+use Core\Router;
 
 class UserBundle
 {
-    public EventDispatcher $eventDispatcher;
 
     /**
      * UserBundle constructor.
      * @param EventDispatcher $eventDispatcher
+     * @param Router $router
      */
     public function __construct(
-        EventDispatcher $eventDispatcher
+        public EventDispatcher $eventDispatcher,
+        public Router $router
     ){
-        $this->eventDispatcher = $eventDispatcher;
+    }
 
+    public function init() {
+        $routes = require_once (__DIR__ . '/config/routes.php');
+        $this->router->mergeRoutes($routes);
     }
 }

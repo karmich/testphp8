@@ -1,4 +1,4 @@
 <?php
 return [
-    'App\Bundles\UserBundle'
+    '\App\Bundles\UserBundle\UserBundle'
 ];

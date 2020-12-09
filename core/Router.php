@@ -19,6 +19,18 @@ class Router
         public EventDispatcher $eventDispatcher
     ){}
 
+    public function addRoute($url, $callback)
+    {
+        $this->routes[$url] = $callback;
+    }
+
+    public function mergeRoutes(array $routes)
+    {
+        foreach ($routes as $url => $callback) {
+            $this->addRoute($url, $callback);
+        }
+    }
+
     public function run(Request $request): Response
     {
         foreach ($this->routes as $route => $controller) {

@@ -8,10 +8,8 @@ use Core\Response;
 
 class UserController
 {
-    public function index()
+    public function index(): Response
     {
-        return new Response(
-            body: "I'm a user!"
-        );
+        return new Response("I'm a user!");
     }
 }
