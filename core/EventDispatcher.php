@@ -67,7 +67,7 @@ class EventDispatcher
                 $attributes = $method->getAttributes(ListensTo::class);
 
                 foreach ($attributes as /** @var ReflectionAttribute */$attribute) {
-                    $this->on($attribute->getArguments()[0], [$rc->getName(), $method->getName()]);
+                    $this->on($attribute->newInstance()->event, [$rc->getName(), $method->getName()]);
                 }
             }
         }
