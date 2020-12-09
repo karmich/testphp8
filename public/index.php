@@ -5,7 +5,7 @@ include_once('../vendor/autoload.php');
 $request = \Core\Request::createFromGlobals();
 $router = new \Core\Router(
     routes: require_once ('../config/routes.php'),
-    eventDispatcher: new \Core\EventDispatcher()
+    eventDispatcher: new \Core\EventDispatcher(require_once ('../config/eventHandlers.php'))
 );
 
 try {

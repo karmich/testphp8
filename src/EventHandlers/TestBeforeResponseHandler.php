@@ -12,7 +12,7 @@ use Core\Events\EventHandler;
 class TestBeforeResponseHandler implements EventHandler
 {
     #[ListensTo(BeforeResponseEvent::class)]
-    public function handle(Event $event)
+    public static function BeforeResponseEvent(Event $event)
     {
         /** @var BeforeResponseEvent $event */
         $response = $event->getResponse();
