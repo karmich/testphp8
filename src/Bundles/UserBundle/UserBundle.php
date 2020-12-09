@@ -18,8 +18,7 @@ class UserBundle
     public function __construct(
         public EventDispatcher $eventDispatcher,
         public Router $router
-    ){
-    }
+    ){}
 
     public function init() {
         $this->router->mergeRoutes(require_once (__DIR__ . '/config/routes.php'));

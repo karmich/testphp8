@@ -1,4 +1,4 @@
 <?php
 return [
-    'App\Bundles\UserBundle\EventHandlers\UserEventHandler'
+    'App\Bundles\UserBundle\EventHandlers\UserEventHandler',
 ];
