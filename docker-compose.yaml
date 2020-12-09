@@ -1,0 +1,13 @@
+version: '2'
+services:
+  app:
+    image: php:8.0.0-cli
+    build:
+      context: .
+    volumes:
+      - ./:/var/www/html
+      - ./docker/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    ports:
+      - 8080:8080
+    working_dir: /var/www/html
+    command: ['php', '-S', '0.0.0.0:8080', '-t', '/var/www/html/public']
