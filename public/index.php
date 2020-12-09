@@ -16,6 +16,8 @@ foreach ($bundles as $bundle) {
     $b->init();
 }
 
+$eventDispatcher->parseEventHandlers();
+
 try {
     $response = $router->run($request);
     $response->send();

@@ -26,7 +26,6 @@ class EventDispatcher
         array $eventHandlers = []
     ){
         $this->eventHandlers = $eventHandlers;
-        $this->parseEventHandlers();
     }
 
     public function on(string $event, callable $handler)
@@ -36,6 +35,13 @@ class EventDispatcher
         }
 
         $this->events[$event][] = $handler;
+    }
+
+    public function mergeHandlers(array $handlers)
+    {
+        foreach ($handlers as $h) {
+            $this->eventHandlers[] = $h;
+        }
     }
 
     public function dispatch(string|Event $eventName, ?Event $data = null)
@@ -59,7 +65,7 @@ class EventDispatcher
         }
     }
 
-    private function parseEventHandlers()
+    public function parseEventHandlers()
     {
         foreach ($this->eventHandlers as $eventHandler) {
             $rc = new ReflectionClass($eventHandler);

@@ -22,7 +22,7 @@ class UserBundle
     }
 
     public function init() {
-        $routes = require_once (__DIR__ . '/config/routes.php');
-        $this->router->mergeRoutes($routes);
+        $this->router->mergeRoutes(require_once (__DIR__ . '/config/routes.php'));
+        $this->eventDispatcher->mergeHandlers(require_once (__DIR__ . '/config/eventHandlers.php'));
     }
 }
