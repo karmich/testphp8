@@ -8,6 +8,12 @@ $router = new \Core\Router(
     eventDispatcher: new \Core\EventDispatcher(require_once ('../config/eventHandlers.php'))
 );
 
+$bundles = require_once ('../config/bundles.php');
+
+foreach ($bundles as $bundle) {
+
+}
+
 try {
     $response = $router->run($request);
     $response->send();
