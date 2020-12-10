@@ -1,4 +1,4 @@
 <?php
 return [
-    'App\EventHandlers\TestBeforeResponseHandler',
+    \App\EventHandlers\TestBeforeResponseHandler::class,
 ];
