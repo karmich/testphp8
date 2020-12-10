@@ -15,16 +15,23 @@ class Request
      */
     public function __construct(
         private string $path,
-        private array $query,
-        private array $request,
-        private array $cookies,
+        private ParameterBag $query,
+        private ParameterBag $request,
+        private ParameterBag $cookies,
         private array $files,
-        private array $server,
+        private ParameterBag $server,
     ){}
 
     public static function createFromGlobals(): Request
     {
-        return new self($_SERVER['PATH_INFO'] ?? "/", $_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
+        return new self(
+            $_SERVER['PATH_INFO'] ?? "/",
+            new ParameterBag($_GET),
+            new ParameterBag($_POST),
+            new ParameterBag($_COOKIE),
+            $_FILES,
+            new ParameterBag($_SERVER)
+        );
     }
 
     /**
@@ -36,33 +43,25 @@ class Request
     }
 
     /**
-     * @return array
+     * @return array|ParameterBag
      */
-    public function getQuery(): array
+    public function getQuery(): array|ParameterBag
     {
         return $this->query;
     }
 
     /**
-     * @return array
+     * @return array|ParameterBag
      */
-    public function getRequest(): array
+    public function getRequest(): array|ParameterBag
     {
         return $this->request;
     }
 
     /**
-     * @return array
+     * @return array|ParameterBag
      */
-    public function getCookie(): array
-    {
-        return $this->cookies;
-    }
-
-    /**
-     * @return array
-     */
-    public function getCookies(): array
+    public function getCookies(): array|ParameterBag
     {
         return $this->cookies;
     }
@@ -76,9 +75,9 @@ class Request
     }
 
     /**
-     * @return array
+     * @return array|ParameterBag
      */
-    public function getServer(): array
+    public function getServer(): array|ParameterBag
     {
         return $this->server;
     }
