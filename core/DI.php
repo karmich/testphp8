@@ -25,7 +25,7 @@ class DI
         return $this->cache[$what] = $this->instantiate($what);
     }
 
-    private function instantiate($what)
+    private function instantiate($what): object
     {
         $rc = new ReflectionClass($what);
         $constructor = $rc->getConstructor();
@@ -40,14 +40,14 @@ class DI
         return $rc->newInstance(...$arguments);
     }
 
-    public function call($object, $method)
+    public function call($object, $method): mixed
     {
         $rm = new \ReflectionMethod($object, $method);
         $arguments = $this->resolveMethodArguments($rm->getParameters());
         return $rm->invokeArgs($object, $arguments);
     }
 
-    private function resolveMethodArguments($parameters)
+    private function resolveMethodArguments($parameters): array
     {
         $arguments = [];
         foreach ($parameters as /** @var ReflectionParameter */ $parameter) {
