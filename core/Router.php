@@ -9,23 +9,36 @@ use Core\Events\BeforeResponseEvent;
 
 class Router
 {
+    /**
+     * @var array
+     */
     public array $routes = [];
+    /**
+     * @var EventDispatcher
+     */
     public EventDispatcher $eventDispatcher;
+    /**
+     * @var DI
+     */
+    private DI $di;
 
     /**
      * Router constructor.
      * @param array $routes
      * @param EventDispatcher $eventDispatcher
+     * @param DI $di
      */
     public function __construct(
         array $routes,
-        EventDispatcher $eventDispatcher
+        EventDispatcher $eventDispatcher,
+        DI $di
     ){
         $this->eventDispatcher = $eventDispatcher;
 
         foreach ($routes as $url => $callback) {
             $this->addRoute($url, $callback);
         }
+        $this->di = $di;
     }
 
     /**
@@ -64,12 +77,12 @@ class Router
         }
     }
 
-    public function run(Request $request, DI $di): Response
+    public function run(Request $request): Response
     {
         foreach ($this->routes as $route => $controller) {
             if ($route == $request->getPath()) {
-                $controllerToExec = $di->create($controller['_controller']);
-                return $this->runController([$controllerToExec, $controller['_action']]);
+                $controllerToExec = $this->di->create($controller['_controller']);
+                return $this->runController($controllerToExec, $controller['_action']);
             }
         }
 
@@ -90,10 +103,10 @@ class Router
         return [$controller, $action];
     }
 
-    private function runController($controllerToExec): Response
+    private function runController($controller, $action): Response
     {
-        $this->eventDispatcher->dispatch(new BeforeControllerEvent($controllerToExec[0], $controllerToExec[1]));
-        $result = call_user_func($controllerToExec);
+        $this->eventDispatcher->dispatch(new BeforeControllerEvent($controller, $action));
+        $result = $this->di->call($controller, $action);
         $this->eventDispatcher->dispatch(new AfterControllerEvent($result));
 
         $response = $result instanceof Response

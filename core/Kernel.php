@@ -31,7 +31,7 @@ class Kernel
         $eventDispatcher->parseEventHandlers();
 
         try {
-            return $router->run($request, $this->di);
+            return $router->run($request);
         } catch(\Throwable $e) {
             return new Response(body: $e->getMessage());
         }
