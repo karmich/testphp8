@@ -6,13 +6,20 @@ namespace Core;
 
 class Kernel
 {
+
+
+    /**
+     * Kernel constructor.
+     * @param DI $di
+     */
+    public function __construct(
+        public DI $di
+    ){}
+
     public function run(Request $request): Response
     {
-        $eventDispatcher = new EventDispatcher(require_once ('../config/eventHandlers.php'));
-        $router = new Router(
-            routes: require_once ('../config/routes.php'),
-            eventDispatcher: $eventDispatcher,
-        );
+        $router = $this->di->create(Router::class);
+        $eventDispatcher = $router->getEventDispatcher();
 
         $bundles = require_once ('../config/bundles.php');
 
@@ -24,8 +31,7 @@ class Kernel
         $eventDispatcher->parseEventHandlers();
 
         try {
-            $response = $router->run($request);
-            return $response;
+            return $router->run($request, $this->di);
         } catch(\Throwable $e) {
             return new Response(body: $e->getMessage());
         }
