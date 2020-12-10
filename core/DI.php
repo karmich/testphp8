@@ -11,6 +11,13 @@ class DI
 {
     private $cache = [];
 
+    private $singletones = [];
+
+    public function singletone($key, $value)
+    {
+        $this->singletones[$key] = $value;
+    }
+
     public function bind($key, $value)
     {
         $this->cache[$key] = $value;
@@ -18,6 +25,10 @@ class DI
 
     public function create($what): object
     {
+        if (array_key_exists($what, $this->singletones)) {
+            return $this->singletones[$what];
+        }
+
         if (array_key_exists($what, $this->cache)) {
             return $this->cache[$what];
         }
