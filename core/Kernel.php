@@ -11,24 +11,25 @@ class Kernel
     /**
      * Kernel constructor.
      * @param DI $di
+     * @param EventDispatcher $eventDispatcher
      */
     public function __construct(
-        public DI $di
+        public DI $di,
+        public EventDispatcher $eventDispatcher,
     ){}
 
     public function run(Request $request): Response
     {
         $router = $this->di->create(Router::class);
-        $eventDispatcher = $router->getEventDispatcher();
 
         $bundles = require_once ('../config/bundles.php');
 
         foreach ($bundles as $bundle) {
-            $b = new $bundle($eventDispatcher, $router);
+            $b = new $bundle($this->eventDispatcher, $router);
             $b->init();
         }
 
-        $eventDispatcher->parseEventHandlers();
+        $this->eventDispatcher->parseEventHandlers();
 
         try {
             return $router->run($request);

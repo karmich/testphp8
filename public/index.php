@@ -6,10 +6,10 @@ use Core\Request;
 
 include_once('../vendor/autoload.php');
 
-$request = Request::createFromGlobals();
 $di = new DI;
 $di->singleton(DI::class, $di);
-$di->singleton(Request::class, $request);
-$kernel = new Kernel($di);
-$response = $kernel->run($request);
+$di->singleton(Request::class, Request::createFromGlobals());
+
+$kernel = $di->create(Kernel::class);
+$response = $di->call($kernel, 'run');
 $response->send();
