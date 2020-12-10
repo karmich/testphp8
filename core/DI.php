@@ -35,7 +35,7 @@ class DI
         }
 
         $parameters = $constructor->getParameters();
-        $arguments = $this->getArguments($parameters);
+        $arguments = $this->resolveMethodArguments($parameters);
 
         return $rc->newInstance(...$arguments);
     }
@@ -43,11 +43,11 @@ class DI
     public function call($object, $method)
     {
         $rm = new \ReflectionMethod($object, $method);
-        $arguments = $this->getArguments($rm->getParameters());
+        $arguments = $this->resolveMethodArguments($rm->getParameters());
         return $rm->invokeArgs($object, $arguments);
     }
 
-    private function getArguments($parameters)
+    private function resolveMethodArguments($parameters)
     {
         $arguments = [];
         foreach ($parameters as /** @var ReflectionParameter */ $parameter) {
