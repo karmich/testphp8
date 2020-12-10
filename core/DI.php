@@ -13,7 +13,7 @@ class DI
 
     private $singletones = [];
 
-    public function singletone($key, $value)
+    public function singleton($key, $value)
     {
         $this->singletones[$key] = $value;
     }
